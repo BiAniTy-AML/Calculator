@@ -17,3 +17,23 @@ function subt(...numbers) {
 function divide(...numbers) {
     return numbers.reduce((quotient, number) => (quotient /= number));
 }
+
+// Makes an operation based on the input
+function operate(opr, ...numbers) {
+    let a = numbers[0];
+    let b = numbers[1];
+
+    switch (opr) {
+        case "+":
+            return add(a, b);
+
+        case "*":
+            return multp(a, b);
+
+        case "-":
+            return subt(a, b);
+
+        case "/":
+            return divide(a, b);
+    }
+}
