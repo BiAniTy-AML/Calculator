@@ -51,10 +51,7 @@ function manage_btns(display_panel) {
     equals_btn = [...equals_btn];
 
     let operator = "";
-    let expression_sides = [];
     let dp_val = "";
-    let left_side = "0";
-    let right_side = "";
     let opr = "";
 
     equals_btn.forEach((button) =>
@@ -62,66 +59,55 @@ function manage_btns(display_panel) {
             let display_value = display_panel.textContent;
             operator = e.target.textContent;
 
-            dp_val = display_panel.textContent.slice(
-                0,
-                display_value.length + 1
-            );
+            dp_val = display_panel.textContent.slice(0, display_value.length);
 
-            switch (operator) {
-                case "+":
-                    break;
+            let sides = [];
+            let left = null;
+            let right = null;
+            let helper = "";
 
-                case "=":
-                    for (let i = 0; i < dp_val.length + 1; i++) {
-                        let current_char = dp_val.charAt(i);
+            let possibilities = ["+", "*", "-", "/"];
 
-                        switch (true) {
-                            case current_char === "":
-                                expression_sides[1] = +right_side;
+            switch (true) {
+                case operator === "+" ||
+                    operator === "*" ||
+                    operator === "-" ||
+                    operator === "/":
+                    for (let i = 0; i < possibilities.length; i++) {
+                        sides = dp_val.slice(0, -1).split(possibilities[i]);
 
-                                switch (opr) {
-                                    case "+":
-                                        display_panel.textContent = operate(
-                                            opr,
-                                            expression_sides[0],
-                                            expression_sides[1]
-                                        );
-                                        expression_sides[0] = "";
-                                        expression_sides[1] = "";
-                                        left_side = "0";
-                                        right_side = "";
-                                        break;
+                        helper = possibilities[i];
 
-                                    case "*":
-                                        display_panel.textContent = operate(
-                                            opr,
-                                            expression_sides[0],
-                                            expression_sides[1]
-                                        );
-                                        expression_sides[0] = "";
-                                        expression_sides[1] = "";
-                                        left_side = "0";
-                                        right_side = "";
-                                        break;
+                        left = +sides[0];
+                        right = +sides[1];
 
-                                    default:
-                                        break;
-                                }
-                                break;
-
-                            case isNaN(+current_char):
-                                expression_sides[0] = +left_side;
-                                left_side = "";
-                                opr = current_char;
-                                break;
-
-                            case !isNaN(+current_char):
-                                !left_side
-                                    ? (right_side += +current_char)
-                                    : (left_side += current_char);
-                                break;
+                        if (!isNaN(left || right)) {
+                            break;
                         }
                     }
+
+                    sides.length === 2
+                        ? (display_panel.textContent = `${operate(
+                              helper,
+                              left,
+                              right
+                          )}${operator}`)
+                        : (right = right);
+
+                    break;
+
+                case operator === "=":
+                    for (let i = 0; i < dp_val.length; i++) {
+                        let current_char = dp_val.charAt(i);
+
+                        isNaN(+current_char) ? (opr = current_char) : (i = i);
+                    }
+
+                    sides = display_value.split(opr);
+                    left = +sides[0];
+                    right = +sides[1];
+
+                    display_panel.textContent = operate(opr, left, right);
                     break;
             }
         })
