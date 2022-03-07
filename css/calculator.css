@@ -5,8 +5,16 @@ body {
 }
 
 .calculator {
-    display: grid;
+    display: flex;
     border: 1px solid red;
+    justify-content: center;
+    align-items: center;
+}
+
+.calc_border {
+    display: grid;
+    border: 10px solid #bbb;
+    padding: 0 10px 10px 10px;
 }
 
 .btns {
@@ -44,10 +52,9 @@ body {
 }
 
 .panel {
-    margin: 10px 0;
-    border: 6px solid blue;
+    margin: 0 0 10px 0;
+    border: 6px solid #aaa;
     min-height: 120px;
-    min-width: 598px;
-    display: grid;
-    place-items: center;
+    width: 598px;
+    word-wrap: break-word;
 }
