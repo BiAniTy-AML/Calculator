@@ -92,7 +92,14 @@ function manage_btns(display_panel) {
                         helper = possibilities[i];
 
                         left = +sides[0];
-                        right = +sides[1];
+
+                        // Defaults right to 1 if * or / are select
+                        // but not the second number of the operation
+                        if (helper === "*" || helper === "/") {
+                            sides[1] === "" ? (right = 1) : (right = +sides[1]);
+                        } else {
+                            right = +sides[1];
+                        }
 
                         // Will continue until both sides of the operation are numbers
                         if (!isNaN(left || right)) {
@@ -143,7 +150,7 @@ function manage_btns(display_panel) {
 
                         // Use the operate() function on the numbers in the array
                         // using the provided operator
-                        default:
+                        case sides.length === 2:
                             display_panel.textContent =
                                 Math.round(
                                     operate(opr, left, right) * 10 ** 14
